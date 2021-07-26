@@ -7,14 +7,13 @@ import 'package:meta/meta.dart';
 class UserService {
   final UserWebClient userWebClient;
 
-  UserService({UserWebClient webClient})
-      : userWebClient = webClient ?? UserWebClient();
+  UserService({UserWebClient webClient}) : userWebClient = webClient ?? UserWebClient();
 
   Future<Token> authenticate({
     @required String username,
     @required String password,
   }) async {
-    var data = await userWebClient.autenticate();
+    var data = await userWebClient.authenticate(username: username, password: password);
     return Token.fromJson(data);
   }
 

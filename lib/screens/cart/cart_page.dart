@@ -11,6 +11,7 @@ import 'package:market/screens/cart/components/cart_list.dart';
 import 'package:market/extensions/double_extension.dart';
 import 'package:market/util/cart_util.dart';
 import 'package:open_file/open_file.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CartPage extends StatefulWidget {
   final CartBloc cartBloc;
@@ -34,7 +35,7 @@ class _CartPageState extends State<CartPage> {
         child: BlocConsumer(
           listener: (context, state) {
             if (state is CartCheckoutSuccessState) {
-              OpenFile.open("assets/pdf/checkout.pdf");
+              OpenFile.open(state.file.path);
             }
           },
           bloc: widget.cartBloc,
@@ -47,6 +48,25 @@ class _CartPageState extends State<CartPage> {
                   _buildTotalValue(),
                   _buildCheckoutButton(),
                 ],
+              );
+            }
+            if (state is CartCheckoutSuccessState) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 40.0),
+                child: Center(
+                  child: Column(
+                    children: [
+                      Text(
+                        "Pedido finalizado com sucesso!",
+                        style: AppTextStyles.textStyleTitle,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 24.0),
+                        child: ElevatedButton(onPressed: () => Navigator.of(context).pop(), child: Text(AppLocalizations.of(context).backButton)),
+                      )
+                    ],
+                  ),
+                ),
               );
             }
             return LoadingIndicator();
@@ -77,10 +97,14 @@ class _CartPageState extends State<CartPage> {
 
   _buildCheckoutButton() {
     return ElevatedButton(
-        onPressed: _onPressCheckoutButton, child: Text("Checkout"));
+        onPressed: _cartProducts.length > 0 ? _onPressCheckoutButton : null, child: Text(AppLocalizations.of(context).checkoutButton));
   }
 
-  _onPressCheckoutButton() {
-    widget.cartBloc.add(CartCheckoutEvent(cartProducts: _cartProducts));
+  _onPressCheckoutButton() async {
+    if (await Permission.storage.request().isGranted) {
+      widget.cartBloc.add(CartCheckoutEvent(cartProducts: _cartProducts));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context).permissionDeniedMessage)));
+    }
   }
 }

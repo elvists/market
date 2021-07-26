@@ -12,14 +12,15 @@ class CartList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (cartProducts.length == 0) {
-      return Center(
-          child: Padding(
+      return Expanded(
+          child: Center(
+              child: Padding(
         padding: const EdgeInsets.only(top: 40.0),
         child: Text(
           "Não há itens no seu carrinho",
           style: AppTextStyles.textStyleTitle,
         ),
-      ));
+      )));
     }
     return Expanded(
       child: ListView.builder(

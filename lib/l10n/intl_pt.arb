@@ -27,5 +27,25 @@
     "cartTitle": "Carrinho",
     "@cartTitle": {
       "description": "Título da tela de carrinho"
+    },
+    "messageUserEmpty": "Digite um usuário",
+    "@messageUserEmpty": {
+      "description": "Mensagem de validacao de login - usuario vazio"
+    },
+    "messagePasswordEmpty": "Digite a senha",
+    "@messagePasswordEmpty": {
+      "description": "Mensagem de validacao de login - senha vazio"
+    },
+    "checkoutButton": "Checkout",
+    "@checkoutButton": {
+      "description": "Label do botão checkout"
+    },
+    "backButton": "Voltar",
+    "@backButton": {
+      "description": "Label do botão voltar"
+    },
+    "permissionDeniedMessage": "É necessário conceder permissão para salvar o arquivo",
+    "@permissionDeniedMessage": {
+      "description": "Mensagem ao não aceitar a permissão de storage"
     }
 }

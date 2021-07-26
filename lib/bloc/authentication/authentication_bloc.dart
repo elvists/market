@@ -1,17 +1,19 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:market/service/cart_service.dart';
 import 'package:market/service/user_service.dart';
 
 import 'authentication_event.dart';
 import 'authentication_state.dart';
 
-class AuthenticationBloc
-    extends Bloc<AuthenticationEvent, AuthenticationState> {
+class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
   final UserService userService;
+  final CartService cartService;
 
-  AuthenticationBloc({UserService userService})
+  AuthenticationBloc({UserService userService, CartService cartService})
       : userService = userService ?? UserService(),
+        cartService = cartService ?? CartService(),
         super(AuthenticationUninitialized());
 
   @override
@@ -37,6 +39,7 @@ class AuthenticationBloc
     if (event is LoggedOut) {
       yield AuthenticationLoading();
       await userService.deleteToken();
+      await cartService.clearCart();
       yield AuthenticationUnauthenticated();
     }
   }

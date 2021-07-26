@@ -80,8 +80,7 @@ class _HomePageState extends State<HomePage> {
               }
             },
             builder: (context, state) {
-              if (state is ProductsListFetchedState ||
-                  state is ProductsListFilteredState) {
+              if (state is ProductsListFetchedState || state is ProductsListFilteredState) {
                 return _buildScreen();
               }
               return Center(child: CircularProgressIndicator());
@@ -112,10 +111,7 @@ class _HomePageState extends State<HomePage> {
                     child: Container(
                         height: 20,
                         width: 20,
-                        decoration: BoxDecoration(
-                            color: AppColors.blue,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
+                        decoration: BoxDecoration(color: AppColors.blue, borderRadius: BorderRadius.all(Radius.circular(20))),
                         child: Center(child: Text(itemsCount.toString()))),
                   );
                 }
@@ -129,8 +125,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   int _countCartProducts(List<CartProduct> cartProducts) {
-    return cartProducts.fold(
-        0, (previousValue, element) => previousValue + element.amount);
+    return cartProducts.fold(0, (previousValue, element) => previousValue + element.amount);
   }
 
   Column _buildScreen() => Column(
@@ -171,6 +166,9 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
-  void _goToCartScreen() => Navigator.pushNamed(context, CartRoute,
-      arguments: context.read<CartBloc>());
+  Future<void> _goToCartScreen() async {
+    var cartBloc = context.read<CartBloc>();
+    await Navigator.pushNamed(context, CartRoute, arguments: cartBloc);
+    cartBloc.add(CartInitEvent());
+  }
 }

@@ -12,8 +12,7 @@ class LoginFormContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<LoginBloc>(
-      create: (BuildContext buildContext) =>
-          LoginBloc(authenticationBloc: context.read<AuthenticationBloc>()),
+      create: (BuildContext buildContext) => LoginBloc(authenticationBloc: context.read<AuthenticationBloc>()),
       child: _LoginForm(),
     );
   }
@@ -27,6 +26,7 @@ class _LoginForm extends StatefulWidget {
 class _LoginFormState extends State<_LoginForm> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _keyForm = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +43,7 @@ class _LoginFormState extends State<_LoginForm> {
       },
       builder: (BuildContext context, LoginState state) {
         return Form(
+          key: _keyForm,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -50,8 +51,7 @@ class _LoginFormState extends State<_LoginForm> {
               _buildPasswordInput(),
               _buildLoginButton(state),
               Container(
-                child:
-                    state is LoginLoading ? CircularProgressIndicator() : null,
+                child: state is LoginLoading ? CircularProgressIndicator() : null,
               ),
             ],
           ),
@@ -80,11 +80,14 @@ class _LoginFormState extends State<_LoginForm> {
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: TextFormField(
                 cursorColor: AppColors.blue,
+                validator: (String username) {
+                  if (username.isEmpty) {
+                    return AppLocalizations.of(context).messageUserEmpty;
+                  }
+                  return null;
+                },
                 controller: _usernameController,
-                decoration: AppStyles.inputDecoration(
-                  hint: AppLocalizations.of(context).usernameHint,
-                  icon: Icons.people,
-                ),
+                decoration: AppStyles.inputDecoration(hint: AppLocalizations.of(context).usernameHint, icon: Icons.people, withLabel: true),
               ),
             ),
           ),
@@ -97,10 +100,17 @@ class _LoginFormState extends State<_LoginForm> {
             child: TextFormField(
               cursorColor: AppColors.blue,
               controller: _passwordController,
+              validator: (String password) {
+                if (password.isEmpty) {
+                  return AppLocalizations.of(context).messagePasswordEmpty;
+                }
+                return null;
+              },
               obscureText: true,
               decoration: AppStyles.inputDecoration(
                 hint: AppLocalizations.of(context).passwordHint,
                 icon: Icons.password,
+                withLabel: true,
               ),
             ),
           ),
@@ -108,9 +118,11 @@ class _LoginFormState extends State<_LoginForm> {
       );
 
   _onLoginButtonPressed() {
-    context.read<LoginBloc>().add(LoginRequested(
-          username: _usernameController.text,
-          password: _passwordController.text,
-        ));
+    if (_keyForm.currentState.validate()) {
+      context.read<LoginBloc>().add(LoginRequested(
+            username: _usernameController.text,
+            password: _passwordController.text,
+          ));
+    }
   }
 }

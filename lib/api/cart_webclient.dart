@@ -9,9 +9,8 @@ class CartWebClient {
     //Enviar carrinho para o backend finalizar o pedido e gerar o comprovante
     final byteData = await rootBundle.load('assets/pdf/checkout.pdf');
 
-    final file = File('${(await getTemporaryDirectory()).path}/checkout.pdf');
-    await file.writeAsBytes(byteData.buffer
-        .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+    final file = File('${(await getApplicationDocumentsDirectory()).path}/checkout.pdf');
+    await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
 
     return file;
   }

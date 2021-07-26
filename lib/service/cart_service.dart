@@ -9,12 +9,10 @@ import 'package:market/util/shared_preferences_util.dart';
 class CartService {
   final CartWebClient cartWebClient;
 
-  CartService({CartWebClient webClient})
-      : cartWebClient = webClient ?? CartWebClient();
+  CartService({CartWebClient webClient}) : cartWebClient = webClient ?? CartWebClient();
 
   Future addProductToCart(Product product, {List<CartProduct> cartList}) async {
-    var productToAdd = cartList.singleWhere((it) => it.product.id == product.id,
-        orElse: () => null);
+    var productToAdd = cartList.singleWhere((it) => it.product.id == product.id, orElse: () => null);
 
     if (productToAdd != null) {
       productToAdd.amount++;
@@ -28,8 +26,7 @@ class CartService {
     Product product, {
     List<CartProduct> cartList,
   }) async {
-    var productToRemove = cartList
-        .singleWhere((it) => it.product.id == product.id, orElse: () => null);
+    var productToRemove = cartList.singleWhere((it) => it.product.id == product.id, orElse: () => null);
     if (productToRemove != null) {
       if (productToRemove.amount > 1) {
         productToRemove.amount--;
