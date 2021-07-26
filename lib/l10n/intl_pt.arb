@@ -1,0 +1,31 @@
+{
+    "@@locale": "pt",
+    "appTitle": "Mercado",
+    "@appTitle": {
+      "description": "Título do app"
+    },
+    "searchHint": "Buscar",
+    "@searchHint": {
+      "description": "Label do input de pesquisa"
+    },
+    "usernameHint": "Usuário",
+    "@usernameHint": {
+      "description": "Label do input de usuário da tela de login"
+    },
+    "passwordHint": "Senha",
+    "@passwordHint": {
+      "description": "Label do input de senha da tela de login"
+    },
+    "logoutLabel": "Logout",
+    "@logoutLabel": {
+      "description": "Label de logout"
+    },
+    "loginLabel": "Login",
+    "@loginLabel": {
+      "description": "Label de login"
+    },
+    "cartTitle": "Carrinho",
+    "@cartTitle": {
+      "description": "Título da tela de carrinho"
+    }
+}
